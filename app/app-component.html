@@ -1,0 +1,28 @@
+<md-toolbar layout="row">
+  <md-button class="menu" hide-gt-sm ng-click="$ctrl.toggleViewsList()" aria-label="document">
+    <md-icon md-svg-icon="menu"></md-icon>
+  </md-button>
+  <h1>Angular Material - Starter App</h1>
+</md-toolbar>
+
+<div flex layout="row">
+
+  <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" class="md-whiteframe-z2" md-component-id="left">
+    <md-list>
+      <md-item ng-repeat="it in $ctrl.views">
+        <md-button ng-click="$ctrl.selectView(it)" ng-class="{'selected' : it === $ctrl.selected }">
+          {{it.name}}
+        </md-button>
+      </md-item>
+    </md-list>
+  </md-sidenav>
+
+  <md-content flex id="content">
+    <view-detail view="$ctrl.selected">
+      <md-button class="share" md-no-ink ng-click="$ctrl.share($event)" aria-label="Share">
+        <md-icon md-svg-icon="share"></md-icon>
+      </md-button>
+    </view-detail>
+  </md-content>
+
+</div>
