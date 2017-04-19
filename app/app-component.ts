@@ -14,6 +14,7 @@
     }
 
     selected = null;
+    selectedItem = null;
     views = [];
 
     constructor(
@@ -21,7 +22,9 @@
       private $mdSidenav: ng.material.ISidenavService,
       private $mdBottomSheet: ng.material.IBottomSheetService,
       private $log: ng.ILogService,
-      private $scope: ng.IScope
+      private $scope: ng.IScope,
+      private $state: ui.router.state,
+      private  $timeout:ng.ITimeoutService
     ) {}
 
     ngOnInit() {
@@ -54,6 +57,13 @@
 
       this.toggleViewsList();
 
+    }
+
+    navigate( viewId ) {
+        this.$state.go('home');
+        this.$timeout(()=> {
+            this.$state.go(viewId);
+            }, 100);
     }
 
     /**

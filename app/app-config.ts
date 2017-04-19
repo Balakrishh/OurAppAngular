@@ -2,11 +2,13 @@
   'use strict';
 
   class Configure {
-    static $inject = [ '$mdIconProvider', '$mdThemingProvider' ];
+    static $inject = [ '$mdIconProvider', '$mdThemingProvider', '$urlRouterProvider', '$stateProvider' ];
 
     constructor(
       $mdIconProvider: ng.material.IIconProvider,
       $mdThemingProvider: ng.material.IThemingProvider
+      $urlRouterProvider: angular.ui.IUrlRouterProvider
+      $stateProvider: angular.ui.IStateProvider
     ) {
 
       // Register the user `avatar` icons
@@ -25,11 +27,40 @@
         .primaryPalette( 'brown' )
         .accentPalette( 'red' )
       ;
+      $urlRouterProvider.otherwise('/contactus');
 
+      $stateProvider.state('home',{
+        url: '/home',
+        templateUrl: '/app/components/view-detail/home.html',
+        component: 'AppComponent' })
+        .state('about',{
+        url: '/about',
+        templateUrl: '/app/components/view-detail/about.html',
+        component: 'AppComponent'})
+        .state('contactus',{
+        url: '/contactus',
+        templateUrl: '/app/components/view-detail/contact-us.html',
+        component: 'AppComponent' })
+        .state('aws',{
+        url: '/aws',
+        templateUrl: '/app/components/view-detail/aws.html',
+        component: 'AppComponent' })
+        .state('java',{
+        url: '/java',
+        templateUrl: '/app/components/view-detail/java.html',
+        component: 'AppComponent' })
+        .state('angular',{
+        url: '/angular',
+        templateUrl: '/app/components/view-detail/angular.html',
+        component: 'AppComponent' })
+        .state('issues',{
+        url: '/issues',
+        templateUrl: '/app/components/view-detail/issues.html',
+        component: 'AppComponent' });
     }
   }
 
-  angular.module( 'views' )
+  angular.module( 'myApp' )
     .config( Configure );
 
 })();

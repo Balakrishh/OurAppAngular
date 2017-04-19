@@ -1,13 +1,32 @@
-<md-toolbar layout="row">
-  <md-button class="menu" hide-gt-sm ng-click="$ctrl.toggleViewsList()" aria-label="document">
-    <md-icon md-svg-icon="menu"></md-icon>
-  </md-button>
-  <h1>Angular Material - Starter App</h1>
-</md-toolbar>
+  <div class="navBardemoBasicUsage" ng-cloak layout="row" layout-xs="column">
+    <md-button class="menu" hide-gt-sm ng-click="$ctrl.toggleViewsList()" aria-label="document" flex="10">
+        <md-icon md-svg-icon="menu"></md-icon>
+    </md-button >
 
+    <md-content flex>
+        <md-nav-bar md-selected-nav-item="selectedItem" nav-bar-aria-label="navigation links" align="centered">
+            <md-nav-item md-nav-sref="home" name="home" >
+                Home
+            </md-nav-item>
+            <md-nav-item md-nav-sref="about" name="about" >
+                About
+            </md-nav-item>
+            <md-nav-item md-nav-sref="contactus" name="contactus" >
+                Contact Us
+            </md-nav-item>
+        </md-nav-bar>
+    </md-content>
+</div>
 <div flex layout="row">
 
-  <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" class="md-whiteframe-z2" md-component-id="left">
+  <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" class="md-whiteframe-z1" md-component-id="left">
+    <md-toolbar md-scroll-shrink>
+      <div class="md-toolbar-tools">
+        <h4>
+          <span>Categories</span>
+        </h4>
+      </div>
+    </md-toolbar>
     <md-list>
       <md-item ng-repeat="it in $ctrl.views">
         <md-button ng-click="$ctrl.selectView(it)" ng-class="{'selected' : it === $ctrl.selected }">
@@ -18,11 +37,9 @@
   </md-sidenav>
 
   <md-content flex id="content">
-    <view-detail view="$ctrl.selected">
+  <ui-view></ui-view>
       <md-button class="share" md-no-ink ng-click="$ctrl.share($event)" aria-label="Share">
         <md-icon md-svg-icon="share"></md-icon>
       </md-button>
-    </view-detail>
   </md-content>
-
 </div>
