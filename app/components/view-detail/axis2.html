@@ -1,0 +1,161 @@
+<div>
+    <!-- First Blog Post -->
+    <h2>
+		<a>Axis2 Webservice</a>
+	</h2>
+    <p class="lead">
+        by <a href="#">Balakrishna</a>
+    </p>
+    <p>
+        <span class="glyphicon glyphicon-time"></span> Posted on December 17th, 2015 at 10:00 PM
+    </p>
+    <div>
+        <p>
+            To get a Basic understanding of what is webservice and its related components please go through <a href="http://docs.oracle.com/javaee/6/tutorial/doc/gijvh.html" target="_blank">Oracle documentation</a> In this Example I am going to build a simple student service using AXIS 1.6.2 and Maven 3.x
+        </p>
+        Axis2 Start Guide
+        <br>
+        <p>
+            I find it hard to find an archetype to generate a maven template of axis2 webservice. So I went through
+            <a href="https://axis.apache.org/axis2/java/core/docs/quickstartguide.html#introduction" target="_blank"></a> and got the corresponding maven plugins to generate wsdl from the POJO classes
+        </p>
+        <p> Below is our student and department classes which are part of our service</p>
+        <div>
+            <pre>public class Student {
+				private String studentId;
+				private String fName;
+				private String lName;
+				private Department dept;
+				}
+			public class Department {
+				private String deptId;
+				private String deptName;
+				}</pre>
+        </div>
+        <p>Below are our service end points which are exposed in our webservice </p>
+        <div>
+            <pre>public interface StudentService {
+				public void addStudent(Student s);
+				public Student getStudent();
+				}</pre>
+        </div>
+    </div>
+    <div>The server side of Axis2 can be deployed on any Servlet engine, and has the following structure</div>
+    <div>
+        <pre>axis2-web 
+				META-INF
+				WEB-INF
+   					classes 
+    				conf
+        				axis2.xml 
+    				lib
+        				activation.jar
+        				...
+        				xmlSchema.jar
+    				modules
+        				modules.list 
+        				addressing.mar
+        				...
+        				soapmonitor.mar
+    				services
+        				services.list
+        				aservice.aar
+				        ...
+        				version.aar
+    				web.xml</pre>
+    </div>
+    <div>
+        <p>Below is the maven plugins used for generating wsdl and creating .aar(Axis archieve file) file to publish our service in the axis2 webapp</p>
+        <pre>
+		&ltbuild&gt
+		&ltfinalName&gtStudentService&lt/finalName&gt
+		&ltplugins&gt
+			&ltplugin&gt
+				&ltgroupId&gtorg.apache.maven.plugins&lt/groupId&gt
+				&ltartifactId&gtmaven-compiler-plugin&lt/artifactId&gt
+				&ltversion&gt${maven.compiler.plugin.version}&lt/version&gt
+				&ltconfiguration&gt
+					&ltsource&gt${java.version}&lt/source&gt
+					&lttarget&gt${java.version}&lt/target&gt
+				&lt/configuration&gt
+			&lt/plugin&gt
+			&ltplugin&gt
+				&ltgroupId&gtorg.apache.axis2<&lt/groupId&gt
+				&ltartifactId&gtaxis2-java2wsdl-maven-plugin&lt/artifactId&gt
+				&ltversion&gt${axis2.version}&lt/version&gt
+				&ltexecutions&gt
+					&ltexecution&gt
+						&ltphase&gtprocess-classes&lt/phase&gt
+						&ltgoals&gt
+							&ltgoal>java2wsdl&lt/goal&gt
+						&lt/goals&gt
+					&lt/execution&gt
+				&lt/executions&gt
+				&ltconfiguration&gt
+					&ltclassName&gtcom.ss.service.StudentServiceImpl<&lt/className&gt
+					&ltoutputFileName&gt${project.build.directory}/StudentService.wsdl&lt/outputFileName&gt
+				&lt/configuration&gt
+			&lt/plugin&gt
+			&lt!-- Maven axis2 AAR plugin --&gt
+			&ltplugin&gt
+				&ltgroupId>org.apache.axis2&lt/groupId&gt
+				&ltartifactId>axis2-aar-maven-plugin&lt/artifactId&gt
+				&ltversion>${axis2.version}&lt/version&gt
+				&ltconfiguration&gt
+					&ltservicesXmlFile&gt
+						src/main/webapp/META-INF/services.xml&lt/servicesXmlFile&gt
+					&ltoutputDirectory>src/main/webapp/WEB-INF/services&lt/outputDirectory&gt
+					&ltincludeDependencies>false&lt/includeDependencies&gt
+				&lt/configuration&gt
+				&ltexecutions&gt
+					&ltexecution>&gt
+						&ltphase&gtpackage&lt/phase&gt
+						&ltgoals&gt
+							&ltgoal>aar&lt/goal&gt
+						&lt/goals
+					&lt/execution&gt
+				&lt/executions&gt
+			&lt/plugin&gt
+		&lt/plugins&gt
+		&ltresources&gt
+			&ltresource&gt
+				&ltdirectory&gttarget/generated-sources/axis2/wsdl2code/resources&lt/directory&gt
+			&lt/resource&gt
+			&ltresource&gt
+				&ltdirectory&gttarget/generated-sources/xmlbeans/resources&lt/directory&gt
+			&lt/resource>
+			&ltresource>
+				&ltdirectory&gtsrc/main/resources&lt/directory&gt
+			&lt/resource&gt
+		&lt/resources&gt
+	&lt/build&gt
+	</pre>
+    </div>
+    <div>
+        <p>Below is our service.xml which is provided in the plugin to create .aar file</p>
+        <pre>
+			&ltservice name="StudentService" scope="application"
+							targetNamespace="http://quickstart.samples/"&gt
+   				&ltdescription&gt
+       				 Student Service
+    			&lt/description&gt
+    			&ltmessageReceivers&gt
+        		&ltmessageReceiver mep="http://www.w3.org/2004/08/wsdl/in-only"
+							class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver" /&gt
+        		&ltmessageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+							class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" /&gt
+    			&lt/messageReceivers>
+    			&ltschema schemaNamespace="http://quickstart.samples/xsd" /&gt
+    			&ltparameter name="ServiceClass">com.ss.service.StudentServiceImpl&lt/parameter&gt
+			&lt/service&gt
+		</pre>
+    </div>
+    <div>
+        <a href="download.do"> Download Source here </a>
+    </div>
+    <div>
+        <p>After deploying into weblogic server(If you are deploying it as an EAR, remember to do it as an exploded EAR) I have the axis2 admin page as shown below</p>
+        <hr/>
+        <img class="img-responsive" src="images/Axis2.JPG" alt="" />
+    </div>
+</div>

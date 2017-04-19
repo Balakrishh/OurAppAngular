@@ -14,7 +14,6 @@
     }
 
     selected = null;
-    selectedItem = null;
     views = [];
 
     constructor(
@@ -29,7 +28,7 @@
 
     ngOnInit() {
       // Load all registered views
-
+      this.selectedItem = "home";
       this.viewService
         .loadAllViews()
         .then( ( views )=> {

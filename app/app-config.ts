@@ -33,6 +33,10 @@
         url: '/home',
         templateUrl: '/app/components/view-detail/home.html',
         component: 'AppComponent' })
+        .state('axis2',{
+        url: '/axis2',
+        templateUrl: '/app/components/view-detail/axis2.html',
+        component: 'AppComponent'})
         .state('about',{
         url: '/about',
         templateUrl: '/app/components/view-detail/about.html',

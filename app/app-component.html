@@ -4,7 +4,7 @@
     </md-button >
 
     <md-content flex>
-        <md-nav-bar md-selected-nav-item="selectedItem" nav-bar-aria-label="navigation links" align="centered">
+        <md-nav-bar md-selected-nav-item="$ctrl.selectedItem" nav-bar-aria-label="navigation links" align="centered">
             <md-nav-item md-nav-sref="home" name="home" >
                 Home
             </md-nav-item>
@@ -36,10 +36,17 @@
     </md-list>
   </md-sidenav>
 
-  <md-content flex id="content">
-  <ui-view></ui-view>
+  <md-content id="content" layout-padding flex>
+    <ui-view></ui-view>
+    <div>
       <md-button class="share" md-no-ink ng-click="$ctrl.share($event)" aria-label="Share">
-        <md-icon md-svg-icon="share"></md-icon>
+        <md-icon md-svg-icon="share">
+            <md-tooltip
+              md-direction="left">
+              Share This Content
+            </md-tooltip>
+        </md-icon>
       </md-button>
+    </div>
   </md-content>
 </div>
